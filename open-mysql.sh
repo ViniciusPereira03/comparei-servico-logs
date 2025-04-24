@@ -1,0 +1,1 @@
+docker exec -it mysql_logs mysql -u root -p

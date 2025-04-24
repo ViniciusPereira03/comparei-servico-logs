@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: comparei-servico-logs
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - net_logs
+    command: ["./wait-for-it.sh", "db", "--", "./main"]
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: "512M"
+  db:
+    image: mysql:8
+    container_name: mysql_logs
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: logsdb
+    volumes:
+      - ./migrations/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - net_logs
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: "768M"
+          
+networks:
+  net_logs:
+    driver: bridge

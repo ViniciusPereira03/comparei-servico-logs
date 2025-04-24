@@ -1,0 +1,12 @@
+
+###
+# @name log
+
+post {{host}}/log
+Content-Type: application/json
+apiKey: {{apiKey}}
+
+{
+    "user_id": "id_teste_123",
+    "event_id": 1
+}
