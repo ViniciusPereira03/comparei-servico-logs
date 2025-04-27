@@ -1,3 +1,4 @@
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InZpbmlAdGVzdGUuY29tIiwiaWQiOjYsInVzZXJuYW1lIjoidmluaSIsInZhbGlkYXRpb25faGFzaCI6IjQ0NjNkMjBlOTY0Nzk5YTY5NWY2NjU2MDBjNjdhMjllIn0.4JoxiXEkeup4nSlvDt2udxVpNSQ1u_kTOAVx8FLwlY4
 
 ###
 # @name log
@@ -5,8 +6,8 @@
 post {{host}}/log
 Content-Type: application/json
 apiKey: {{apiKey}}
+Authorization: Bearer {{token}}
 
 {
-    "user_id": "id_teste_123",
     "event_id": 1
 }

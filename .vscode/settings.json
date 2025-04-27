@@ -4,7 +4,7 @@
             "apiKey": "bmZzCzXyZZXN0LbU7T2pVVNrMh5FwWNklKQ1UnuDbMcoAWzsgc4oUvKS783DI2XF"
         },
         "LOCAL": {
-            "host": "http://localhost:8080",
+            "host": "http://localhost:8081",
             "apiKey": "{{$shared apiKey}}",
         },
         "SERVER": {
@@ -18,7 +18,10 @@
         "migrations": "database",
         "domain": "mappings",
         "infrastructure": "server",
-        "http": "public"
+        "http": "public",
+        "dto": "Less",
+        "publisher": "shared",
+        "subscriber": "target"
     },
     "material-icon-theme.files.associations": {
 

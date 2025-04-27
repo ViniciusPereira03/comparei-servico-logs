@@ -20,6 +20,7 @@ func (r *MySQLRepository) CreateLog(log *log.Log) error {
 }
 
 func (r *MySQLRepository) CreateUser(user *user.User) error {
-	_, err := r.db.Exec("INSERT INTO users (id, level, score, status) VALUES (?, ?, ?)", user.ID, user.Level, 0, user.Status)
+	user.Score = 0
+	_, err := r.db.Exec("INSERT INTO users (id, level, score, status) VALUES (?, ?, ?, ?)", user.ID, user.Level, user.Score, user.Status)
 	return err
 }
