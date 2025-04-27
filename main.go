@@ -4,30 +4,44 @@ import (
 	"comparei-servico-logs/config"
 	"comparei-servico-logs/internal/app"
 	customHTTP "comparei-servico-logs/internal/infrastructure/http"
+	"comparei-servico-logs/internal/infrastructure/messaging/subscriber"
 	"comparei-servico-logs/internal/infrastructure/repository"
+	"context"
 	"database/sql"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 
+	"github.com/go-redis/redis/v8"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
 	if err := config.LoadConfig(); err != nil {
-		log.Fatal("Erro ao carregar configurações")
+		log.Fatal("Erro ao carregar configurações:", err)
+	}
+
+	// Testar conexão com Redis de mensageria
+	redisMessaging := redis.NewClient(&redis.Options{
+		Addr: os.Getenv("REDIS_MESSAGING_HOST") + ":" + os.Getenv("REDIS_MESSAGING_PORT"),
+	})
+	ctx := context.Background()
+	_, err := redisMessaging.Ping(ctx).Result()
+	if err != nil {
+		log.Fatal("Não foi possível conectar ao Redis de mensageria:", err)
 	}
 
 	// Configuração da conexão com o MySQL usando variáveis de ambiente
 	dsn := os.Getenv("MYSQL_USER") + ":" + os.Getenv("MYSQL_PASSWORD") + "@tcp(" + os.Getenv("MYSQL_HOST") + ")/" + os.Getenv("MYSQL_DB")
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Erro ao abrir conexão MySQL:", err)
 	}
 
 	// Verificar a conexão com o MySQL
 	if err := db.Ping(); err != nil {
-		log.Fatal("Não foi possível conectar ao MySQL: ", err)
+		log.Fatal("Não foi possível conectar ao MySQL:", err)
 	}
 
 	mysqlRepo := repository.NewMySQLRepository(db)
@@ -36,8 +50,21 @@ func main() {
 	}
 
 	logService := app.NewLogService(mysqlRepo)
-	customHTTP.IniHandlers(logService)
+	userService := app.NewUserService(mysqlRepo)
 
+	subscriber.SetUserService(userService)
+
+	// Iniciar o subscriber (rodar ouvindo eventos)
+	go func() {
+		fmt.Println("Inicializando subscriber...")
+		err := subscriber.SubCreateUser()
+		if err != nil {
+			log.Println("Erro no subscriber:", err)
+		}
+	}()
+
+	// Iniciar o servidor HTTP
+	customHTTP.IniHandlers(logService)
 	router := customHTTP.NewRouter(logService)
 
 	log.Println("Servidor iniciado na porta " + os.Getenv("PORT"))

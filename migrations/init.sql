@@ -4,6 +4,7 @@ USE logsdb;
 -- Tabela de usuários
 CREATE TABLE IF NOT EXISTS users (
     id VARCHAR(255) NOT NULL PRIMARY KEY,
+    status int NOT NULL,
     score DECIMAL(10,2),
     level INT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
