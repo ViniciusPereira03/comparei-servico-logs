@@ -49,9 +49,11 @@ func main() {
 		log.Fatal("mysqlRepo está nil")
 	}
 
-	logService := app.NewLogService(mysqlRepo)
+	eventService := app.NewEventService(mysqlRepo)
 	userService := app.NewUserService(mysqlRepo)
+	levelsService := app.NewLevelsService(mysqlRepo)
 
+	logService := app.NewLogService(mysqlRepo, eventService, userService, levelsService)
 	subscriber.SetUserService(userService)
 
 	// Iniciar o subscriber (rodar ouvindo eventos)
