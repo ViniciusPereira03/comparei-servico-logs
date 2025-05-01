@@ -5,12 +5,14 @@ import (
 )
 
 type CreateLogDTO struct {
-	EventID int `json:"event_id" validate:"required"`
+	EventID          int `json:"event_id" validate:"required"`
+	MercadoProdutoID int `json:"mercado_produto_id"`
 }
 
 func (dto *CreateLogDTO) ParseToLog(userId string) *log.Log {
 	return &log.Log{
-		UserID:  userId,
-		EventID: dto.EventID,
+		UserID:           userId,
+		EventID:          dto.EventID,
+		MercadoProdutoID: dto.MercadoProdutoID,
 	}
 }

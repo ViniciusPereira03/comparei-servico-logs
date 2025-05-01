@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS logs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id VARCHAR(255) NOT NULL,
     event_id INT NOT NULL,
+    mercado_produto_id INT NULL,
     score INT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id),

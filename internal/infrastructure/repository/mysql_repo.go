@@ -18,7 +18,12 @@ func NewMySQLRepository(db *sql.DB) *MySQLRepository {
 
 // Logs
 func (r *MySQLRepository) CreateLog(log *log.Log) error {
-	_, err := r.db.Exec("INSERT INTO logs (user_id, event_id, score) VALUES (?, ?, ?)", log.UserID, log.EventID, log.Score)
+	_, err := r.db.Exec("INSERT INTO logs (user_id, event_id, mercado_produto_id, score) VALUES (?, ?, ?, ?)",
+		log.UserID,
+		log.EventID,
+		log.MercadoProdutoID,
+		log.Score,
+	)
 	return err
 }
 

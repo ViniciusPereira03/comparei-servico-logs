@@ -38,6 +38,11 @@ func (s *LogService) CreateLog(log *log.Log) error {
 	}
 	log.Score = event.Score
 
+	err = s.mysqlRepo.CreateLog(log)
+	if err != nil {
+		return err
+	}
+
 	user, err := s.userService.GetUserById(log.UserID)
 	if err != nil {
 		return err
