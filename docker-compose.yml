@@ -11,11 +11,11 @@ services:
     networks:
       - net_logs
       - comparei_net
-    command: ["./wait-for-it.sh", "db", "--", "./main"]
+    command: ["./wait-for-it.sh", "db:3306", "--", "./main"]
     deploy:
       resources:
         limits:
-          cpus: "1.0"
+          cpus: "0.5"
           memory: "512M"
   db:
     image: mysql:8
@@ -30,8 +30,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "1.0"
-          memory: "768M"
+          cpus: "0.5"
+          memory: "512M"
           
 networks:
   net_logs:
