@@ -54,21 +54,18 @@ func main() {
 	levelsService := app.NewLevelsService(mysqlRepo)
 
 	logService := app.NewLogService(mysqlRepo, eventService, userService, levelsService)
-	subscriber.SetUserService(userService)
+	subscriber.SetUserService(userService, logService)
 
 	// Iniciar o subscriber (rodar ouvindo eventos)
 	go func() {
-		fmt.Println("Inicializando subscriber...")
-		err := subscriber.SubCreateUser()
-		if err != nil {
-			log.Println("Erro no subscriber:", err)
-		}
+		fmt.Println("📡 Inicializando subscriber...")
+		subscriber.Run()
 	}()
 
 	// Iniciar o servidor HTTP
 	customHTTP.IniHandlers(logService)
 	router := customHTTP.NewRouter(logService)
 
-	log.Println("Servidor iniciado na porta " + os.Getenv("PORT"))
+	log.Println("🚀 Servidor iniciado na porta " + os.Getenv("PORT"))
 	http.ListenAndServe(":"+os.Getenv("PORT"), router)
 }
