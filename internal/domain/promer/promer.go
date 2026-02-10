@@ -22,3 +22,11 @@ func (dto *Promer) ParseToUpdateLog() *log.Log {
 		MercadoProdutoID: dto.ID,
 	}
 }
+
+func (dto *Promer) ParseToConfirmLog() *log.Log {
+	return &log.Log{
+		UserID:           dto.UserID,
+		EventID:          3,
+		MercadoProdutoID: dto.ID,
+	}
+}

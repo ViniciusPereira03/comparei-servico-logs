@@ -35,6 +35,7 @@ func Run() {
 	go subCreateUser()
 	go subNewProduct()
 	go subUpdateProduct()
+	go subConfirmaValor()
 }
 
 func subCreateUser() error {
@@ -97,5 +98,26 @@ func subUpdateProduct() error {
 		err = log_service.CreateLog(promer.ParseToUpdateLog())
 	}
 
+	return nil
+}
+
+func subConfirmaValor() error {
+	ctx := context.Background()
+
+	sub := rdb.Subscribe(ctx, "confirma_valor_mercado_produto")
+	ch := sub.Channel()
+
+	for msg := range ch {
+		var promer promer.Promer
+		err := json.Unmarshal([]byte(msg.Payload), &promer)
+		if err != nil {
+			fmt.Println("[ERRO] Erro ao decodificar payload de mensageria:", err)
+			continue
+		}
+		err = log_service.CreateLog(promer.ParseToConfirmLog())
+		if err != nil {
+			fmt.Println("[ERRO] Erro ao criar log de confirmação de valor:", err)
+		}
+	}
 	return nil
 }
