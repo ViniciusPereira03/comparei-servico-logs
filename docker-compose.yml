@@ -5,7 +5,7 @@ services:
     build: .
     container_name: comparei-servico-logs
     ports:
-      - "8081:8081"
+      - "8084:8084"
     depends_on:
       - db
     networks:
@@ -24,6 +24,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: logsdb
     volumes:
+      - ./data/mysql:/var/lib/mysql
       - ./migrations/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - net_logs

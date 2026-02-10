@@ -4,7 +4,7 @@
             "apiKey": "bmZzCzXyZZXN0LbU7T2pVVNrMh5FwWNklKQ1UnuDbMcoAWzsgc4oUvKS783DI2XF"
         },
         "LOCAL": {
-            "host": "http://localhost:8081",
+            "host": "http://localhost:8084",
             "apiKey": "{{$shared apiKey}}",
         },
         "SERVER": {
