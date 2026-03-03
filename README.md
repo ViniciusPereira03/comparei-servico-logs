@@ -66,16 +66,7 @@ VALIDATION_HASH=teu_hash_de_validacao
 ```
 
 
-3. **Subir as Dependências (MySQL e Redis):**
-Antes de rodar a aplicação, garante que o banco de dados e o Redis estão a funcionar. Podes subir apenas o banco de dados usando o Docker Compose:
-```bash
-docker-compose up -d db
-
-```
-
-
->(Nota: Certifique-se de que o Redis da rede `comparei_net` está executando).
-4. **Executar a Aplicação com `run.sh`:**
+3. **Executar a Aplicação com `run.sh`:**
 Dá permissão de execução ao script (caso ainda não tenha dado) e executa-o. Este ficheiro já está configurado para inicializar a aplicação corretamente com os devidos parâmetros:
 ```bash
 chmod +x run.sh
@@ -83,7 +74,9 @@ chmod +x run.sh
 
 ```
 
-5. **Verificar os Logs:**
+> **Nota:** O script aguardará automaticamente (`wait-for-it.sh`) os bancos de dados estarem prontos antes de iniciar o servidor Go.
+
+4. **Verificar os Logs:**
 Após a execução do script, deves ver as seguintes mensagens no terminal confirmando que os serviços estão a rodar:
 * `📡 Inicializando subscriber...`
 * `🚀 Servidor iniciado na porta 8084`
